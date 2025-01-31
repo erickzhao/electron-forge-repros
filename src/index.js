@@ -1,13 +1,16 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import { activeWindow } from 'get-windows';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
-const createWindow = () => {
+const __dirname = import.meta.dirname;
+
+const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -18,7 +21,8 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  await mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  console.log(await activeWindow());
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
